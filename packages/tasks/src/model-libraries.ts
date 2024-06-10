@@ -34,7 +34,7 @@ export interface LibraryUiElement {
 	 * By default, those files are counted:
 	 * "config.json", "config.yaml", "hyperparams.yaml", "meta.yaml"
 	 */
-	countDownloads?: ElasticBoolQueryFilter;
+	countDownloads?: ElasticBoolQueryFilter[];
 	/**
 	 * should we display this library in hf.co/models filter
 	 * (only for popular libraries with > 100 models)
@@ -65,9 +65,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/adapters",
 		snippets: snippets.adapters,
 		filter: true,
-		countDownloads: {
-			term: { path: "adapter_config.json" },
-		},
+		countDownloads: [
+			{
+				term: { path: "adapter_config.json" },
+			},
+		],
 	},
 	allennlp: {
 		prettyLabel: "AllenNLP",
@@ -84,9 +86,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/asteroid",
 		snippets: snippets.asteroid,
 		filter: true,
-		countDownloads: {
-			term: { path: "pytorch_model.bin" },
-		},
+		countDownloads: [
+			{
+				term: { path: "pytorch_model.bin" },
+			},
+		],
 	},
 	audiocraft: {
 		prettyLabel: "Audiocraft",
@@ -107,16 +111,20 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoName: "big_vision",
 		repoUrl: "https://github.com/google-research/big_vision",
 		filter: false,
-		countDownloads: {
-			wildcard: { path: "*.npz" },
-		},
+		countDownloads: [
+			{
+				term: {
+					path_extension: "npz",
+				},
+			},
+		],
 	},
 	chat_tts: {
 		prettyLabel: "ChatTTS",
 		repoName: "ChatTTS",
 		repoUrl: "https://github.com/2noise/ChatTTS.git",
 		filter: false,
-		countDownloads: { term: { path: "asset/GPT.pt" } },
+		countDownloads: [{ term: { path: "asset/GPT.pt" } }],
 		snippets: snippets.chattts,
 	},
 	diffusers: {
@@ -138,9 +146,12 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoName: "elm",
 		repoUrl: "https://github.com/slicex-ai/elm",
 		filter: false,
-		countDownloads: {
-			wildcard: { path: "*/slicex_elm_config.json" },
-		},
+		countDownloads: [
+			{
+				term: { path: "slicex_elm_config.json" },
+			},
+			{ exists: { field: "path_prefix" } },
+		],
 	},
 	espnet: {
 		prettyLabel: "ESPnet",
@@ -171,9 +182,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://fasttext.cc/",
 		snippets: snippets.fasttext,
 		filter: true,
-		countDownloads: {
-			wildcard: { path: "*.bin" },
-		},
+		countDownloads: [
+			{
+				term: { path_extension: "bin" },
+			},
+		],
 	},
 	flair: {
 		prettyLabel: "Flair",
@@ -182,9 +195,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/flair",
 		snippets: snippets.flair,
 		filter: true,
-		countDownloads: {
-			term: { path: "pytorch_model.bin" },
-		},
+		countDownloads: [
+			{
+				term: { path: "pytorch_model.bin" },
+			},
+		],
 	},
 	gliner: {
 		prettyLabel: "GLiNER",
@@ -192,18 +207,22 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://github.com/urchade/GLiNER",
 		snippets: snippets.gliner,
 		filter: false,
-		countDownloads: {
-			term: { path: "gliner_config.json" },
-		},
+		countDownloads: [
+			{
+				term: { path: "gliner_config.json" },
+			},
+		],
 	},
 	grok: {
 		prettyLabel: "Grok",
 		repoName: "Grok",
 		repoUrl: "https://github.com/xai-org/grok-1",
 		filter: false,
-		countDownloads: {
-			terms: { path: ["ckpt/tensor00000_000", "ckpt-0/tensor00000_000"] },
-		},
+		countDownloads: [
+			{
+				terms: { path: ["ckpt/tensor00000_000", "ckpt-0/tensor00000_000"] },
+			},
+		],
 	},
 	keras: {
 		prettyLabel: "Keras",
@@ -212,7 +231,7 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/keras",
 		snippets: snippets.keras,
 		filter: true,
-		countDownloads: { term: { path: "saved_model.pb" } },
+		countDownloads: [{ term: { path: "saved_model.pb" } }],
 	},
 	"keras-nlp": {
 		prettyLabel: "KerasNLP",
@@ -238,7 +257,7 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/ml-agents",
 		snippets: snippets.mlAgents,
 		filter: true,
-		countDownloads: { wildcard: { path: "*.onnx" } },
+		countDownloads: [{ term: { path_extension: "onnx" } }],
 	},
 	mlx: {
 		prettyLabel: "MLX",
@@ -254,7 +273,7 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/mlx-image",
 		snippets: snippets.mlxim,
 		filter: false,
-		countDownloads: { term: { path: "model.safetensors" } },
+		countDownloads: [{ term: { path: "model.safetensors" } }],
 	},
 	nemo: {
 		prettyLabel: "NeMo",
@@ -262,7 +281,7 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://github.com/NVIDIA/NeMo",
 		snippets: snippets.nemo,
 		filter: true,
-		countDownloads: { wildcard: { path: "*.nemo" } },
+		countDownloads: [{ term: { path_extension: "nemo" } }],
 	},
 	open_clip: {
 		prettyLabel: "OpenCLIP",
@@ -270,7 +289,7 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://github.com/mlfoundations/open_clip",
 		snippets: snippets.open_clip,
 		filter: true,
-		countDownloads: { wildcard: { path: "*pytorch_model.bin" } },
+		countDownloads: [{ term: { path_extension: "bin" } }, { wildcard: { path_filename: "*pytorch_model" } }],
 	},
 	paddlenlp: {
 		prettyLabel: "paddlenlp",
@@ -279,9 +298,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/paddlenlp",
 		snippets: snippets.paddlenlp,
 		filter: true,
-		countDownloads: {
-			term: { path: "model_config.json" },
-		},
+		countDownloads: [
+			{
+				term: { path: "model_config.json" },
+			},
+		],
 	},
 	peft: {
 		prettyLabel: "PEFT",
@@ -289,9 +310,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://github.com/huggingface/peft",
 		snippets: snippets.peft,
 		filter: true,
-		countDownloads: {
-			term: { path: "adapter_config.json" },
-		},
+		countDownloads: [
+			{
+				term: { path: "adapter_config.json" },
+			},
+		],
 	},
 	"pyannote-audio": {
 		prettyLabel: "pyannote.audio",
@@ -314,7 +337,7 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/sample-factory",
 		snippets: snippets.sampleFactory,
 		filter: true,
-		countDownloads: { term: { path: "cfg.json" } },
+		countDownloads: [{ term: { path: "cfg.json" } }],
 	},
 	"sentence-transformers": {
 		prettyLabel: "sentence-transformers",
@@ -338,9 +361,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://github.com/scikit-learn/scikit-learn",
 		snippets: snippets.sklearn,
 		filter: true,
-		countDownloads: {
-			term: { path: "sklearn_model.joblib" },
-		},
+		countDownloads: [
+			{
+				term: { path: "sklearn_model.joblib" },
+			},
+		],
 	},
 	spacy: {
 		prettyLabel: "spaCy",
@@ -349,9 +374,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/spacy",
 		snippets: snippets.spacy,
 		filter: true,
-		countDownloads: {
-			wildcard: { path: "*.whl" },
-		},
+		countDownloads: [
+			{
+				term: { path_extension: "whl" },
+			},
+		],
 	},
 	"span-marker": {
 		prettyLabel: "SpanMarker",
@@ -368,16 +395,18 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/speechbrain",
 		snippets: snippets.speechbrain,
 		filter: true,
-		countDownloads: {
-			term: { path: "hyperparams.yaml" },
-		},
+		countDownloads: [
+			{
+				term: { path: "hyperparams.yaml" },
+			},
+		],
 	},
 	"stable-audio-tools": {
 		prettyLabel: "Stable Audio Tools",
 		repoName: "stable-audio-tools",
 		repoUrl: "https://github.com/Stability-AI/stable-audio-tools.git",
 		filter: false,
-		countDownloads: { term: { path: "model.safetensors" } },
+		countDownloads: [{ term: { path: "model.safetensors" } }],
 		snippets: snippets.stable_audio_tools,
 	},
 	"stable-baselines3": {
@@ -387,9 +416,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/stable-baselines3",
 		snippets: snippets.stableBaselines3,
 		filter: true,
-		countDownloads: {
-			wildcard: { path: "*.zip" },
-		},
+		countDownloads: [
+			{
+				term: { path_extension: "zip" },
+			},
+		],
 	},
 	stanza: {
 		prettyLabel: "Stanza",
@@ -398,9 +429,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/stanza",
 		snippets: snippets.stanza,
 		filter: true,
-		countDownloads: {
-			term: { path: "models/default.zip" },
-		},
+		countDownloads: [
+			{
+				term: { path: "models/default.zip" },
+			},
+		],
 	},
 	tensorflowtts: {
 		prettyLabel: "TensorFlowTTS",
@@ -413,9 +446,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoName: "timesfm",
 		repoUrl: "https://github.com/google-research/timesfm",
 		filter: false,
-		countDownloads: {
-			term: { path: "checkpoints/checkpoint_1100000/state/checkpoint" },
-		},
+		countDownloads: [
+			{
+				term: { path: "checkpoints/checkpoint_1100000/state/checkpoint" },
+			},
+		],
 	},
 	timm: {
 		prettyLabel: "timm",
@@ -424,9 +459,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		docsUrl: "https://huggingface.co/docs/hub/timm",
 		snippets: snippets.timm,
 		filter: true,
-		countDownloads: {
-			terms: { path: ["pytorch_model.bin", "model.safetensors"] },
-		},
+		countDownloads: [
+			{
+				terms: { path: ["pytorch_model.bin", "model.safetensors"] },
+			},
+		],
 	},
 	transformers: {
 		prettyLabel: "Transformers",
@@ -450,9 +487,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		repoUrl: "https://github.com/Unity-Technologies/sentis-samples",
 		snippets: snippets.sentis,
 		filter: true,
-		countDownloads: {
-			wildcard: { path: "*.sentis" },
-		},
+		countDownloads: [
+			{
+				term: { path_extension: "sentis" },
+			},
+		],
 	},
 	voicecraft: {
 		prettyLabel: "VoiceCraft",
@@ -465,9 +504,11 @@ export const MODEL_LIBRARIES_UI_ELEMENTS = {
 		prettyLabel: "WhisperKit",
 		repoName: "WhisperKit",
 		repoUrl: "https://github.com/argmaxinc/WhisperKit",
-		countDownloads: {
-			wildcard: { path: "*/model.mil" },
-		},
+		countDownloads: [
+			{ term: { path_filename: "model" } },
+			{ term: { path_extension: "mil" } },
+			{ exists: { field: "path_prefix" } },
+		],
 	},
 } satisfies Record<string, LibraryUiElement>;
 

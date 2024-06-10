@@ -11,10 +11,13 @@
  * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
  */
 
+export type ElasticField = "path" | "path_extension" | "path_prefix" | "path_filename";
+
 export type ElasticBoolQueryFilter =
 	// match a single filename
-	| { term?: { path: string } }
+	| { term?: Partial<{ [k in ElasticField]: string }> }
 	// match multiple possible filenames
-	| { terms?: { path: string[] } }
+	| { terms?: Partial<{ [k in ElasticField]: string[] }> }
 	// match a wildcard
-	| { wildcard?: { path: string } };
+	| { wildcard?: Partial<{ [k in ElasticField]: string }> }
+	| { exists: { field: ElasticField } };
