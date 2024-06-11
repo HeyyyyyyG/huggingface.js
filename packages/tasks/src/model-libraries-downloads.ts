@@ -19,5 +19,5 @@ export type ElasticBoolQueryFilter =
 	// match multiple possible filenames
 	| { terms?: Partial<{ [k in ElasticField]: string[] }> }
 	// match a wildcard
-	| { wildcard?: Partial<{ [k in ElasticField]: string }> }
+	| { wildcard?: Partial<{ [k in Extract<ElasticField, "path_filename">]: string }> }
 	| { exists: { field: ElasticField } };
